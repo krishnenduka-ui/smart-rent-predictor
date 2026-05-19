@@ -7,7 +7,7 @@ import connectDB from './db/connectDB.js'
 import authRouter from './routes/authRoutes.js'
 import { protect , authorize } from "./middlewares/authMiddleware.js";
 import propertyRouter from './routes/propertyRoutes.js'
-
+import errorHandler from "./middlewares/errorHandler.js"
 
 const app = express()
 app.use(express.json())
@@ -23,6 +23,10 @@ app.get('/profile',protect,(req,res) =>{
 app.get('/dashboard', protect, authorize("admin"),(req,res) =>{
     return res.json({message:"Welcome admin"})
 })
+
+
+//Error handler
+app.use(errorHandler)
 
 const port = process.env.PORT || 5000
 
