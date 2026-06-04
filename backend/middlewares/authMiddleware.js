@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-
+dotenv.config()
 
 export const protect = (req,res,next)=>{
     let token 

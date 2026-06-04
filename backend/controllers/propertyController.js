@@ -1,4 +1,3 @@
-import express from 'express'
 import propertyModel from '../models/propertyModel.js'
 
 
@@ -33,10 +32,17 @@ export const addProperty = async (req, res, next) => {
             !popularity ||
             !propertyType ||
             !neighbourhoods ||
-            featured === undefined ) {
+            featured === undefined) {
 
             return res.json({ error: "Some fields are empty" })
         }
+
+        const mainImage = req.files.image[0].path;
+
+        const galleryImages =
+            req.files.gallery?.map(
+                (file) => file.path
+            ) || [];
 
         const property = await propertyModel.create({
             title,
@@ -52,7 +58,9 @@ export const addProperty = async (req, res, next) => {
             popularity,
             propertyType,
             neighbourhoods: neighbourhoods.split(","),
-            featured 
+            featured,
+            images: mainImage,
+            gallery:galleryImages
         })
 
         return res.json({ message: "Property added", property })
@@ -64,7 +72,7 @@ export const addProperty = async (req, res, next) => {
 
 
 //Get all properties
-export const getallProperties = async (req, res, next) => {
+export const getAllProperties = async (req, res, next) => {
     try {
         const { location, bedrooms, bathrooms, amenities, propertyType, minPrice, maxPrice, sort } = req.query
         let query = {}
@@ -133,16 +141,20 @@ export const getsingleProperty = async (req, res, next) => {
 
 }
 
+
+
 //Update property
 export const updateProperty = async (req, res, next) => {
     try {
         const id = req.params.id
-        const updatedProperty = await propertyModel.findByIdAndUpdate(id, req.body,{ returnDocument: "after"})
+        const updatedProperty = await propertyModel.findByIdAndUpdate(id, req.body, { returnDocument: "after" })
         return res.json(updatedProperty)
     } catch (error) {
         next(error)
     }
 }
+
+
 
 //Delete property
 export const deleteProperty = async (req, res, next) => {

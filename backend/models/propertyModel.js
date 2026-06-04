@@ -61,7 +61,18 @@ const propertySchema = mongoose.Schema({
     featured: {
         type: Boolean,
         default: false
-    }
+    },
+     // Main cover image
+    image: {
+        type: String,
+        required: true
+    },
+
+    // Multiple gallery images
+    gallery: {
+        type: [String],
+        default: []
+    },
 
 })
 

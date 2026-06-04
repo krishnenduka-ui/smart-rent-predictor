@@ -20,7 +20,13 @@ const userSchema = mongoose.Schema({
         type:String,
         enum:["user","admin"],
         default:"user"
-    }
+    },
+    favorites:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "properties"
+        }
+    ]
 })
 
 const userModel = mongoose.model("users",userSchema)

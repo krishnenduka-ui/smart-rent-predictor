@@ -1,4 +1,3 @@
-import express from 'express'
 import userModel from '../models/userModel.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
@@ -54,6 +53,12 @@ export const loginUser = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "2h" }
     )
-    return res.json({ message: "User loggedIn", token })
+    return res.json({ message: "User loggedIn", token ,user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role
+   }
+})
 
 }

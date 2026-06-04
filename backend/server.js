@@ -3,20 +3,26 @@ dns.setServers(["1.1.1.1"]);
 import express from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
+import cors from 'cors'
 import connectDB from './db/connectDB.js'
 import authRouter from './routes/authRoutes.js'
 import { protect , authorize } from "./middlewares/authMiddleware.js";
 import propertyRouter from './routes/propertyRoutes.js'
 import errorHandler from "./middlewares/errorHandler.js"
+import favoriteRouter from './routes/favoriteRoutes.js'
+import compareRouter from './routes/compareRoutes.js'
 
 const app = express()
+app.use(cors())
 app.use(express.json())
 
 app.use('/auth',authRouter)
 app.use('/property',propertyRouter)
+app.use('/favorites', favoriteRouter)
+app.use('/compare',compareRouter)
 
 
-app.get('/profile',protect,(req,res) =>{
+app.get('/profile',protect,authorize("user"),(req,res) =>{
     return res.json({message:"Welcome to profile",user:req.user.username})
 })
 
