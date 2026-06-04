@@ -41,7 +41,7 @@ const propertySlice = createSlice({
         })
         .addCase(addProperty.fulfilled,(state,action)=>{
             state.loading = false
-            state.properties.push(action.payload)
+            state.properties.push(action.payload.property)
         })
         .addCase(addProperty.rejected,(state,action)=>{
             state.loading = false
@@ -58,7 +58,7 @@ const propertySlice = createSlice({
         .addCase(deleteProperty.fulfilled,(state,action)=>{
             state.loading = false
             state.properties = state.properties.filter(
-                (property) => property.id !== action.payload
+                (property) => property._id !== action.payload
             )
         })
         .addCase(deleteProperty.rejected,(state,action)=>{

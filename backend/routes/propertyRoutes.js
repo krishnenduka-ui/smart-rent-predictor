@@ -16,9 +16,14 @@ router.post('/',protect, authorize("admin"),upload.fields([
     { name: "gallery", maxCount: 10 }
   ]),addProperty)
 router.get('/featured',featuredProperties)
-router.get('/',getallProperties)
+router.get('/',getAllProperties)
 router.get('/:id',getsingleProperty)
-router.put('/:id',protect, authorize("admin"),updateProperty)
+
+router.put('/:id',protect, authorize("admin"),upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "gallery", maxCount: 10 }
+  ]) ,updateProperty)
+  
 router.delete('/:id',protect, authorize("admin"),deleteProperty)
 
 export default router

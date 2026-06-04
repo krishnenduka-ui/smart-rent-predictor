@@ -62,17 +62,27 @@ const propertySchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-     // Main cover image
-    image: {
-        type: String,
-        required: true
+    // MAIN IMAGE
+  image: {
+    url: {
+      type: String,
+      required: true
     },
 
-    // Multiple gallery images
-    gallery: {
-        type: [String],
-        default: []
-    },
+    public_id: {
+      type: String,
+      required: true
+    }
+  },
+
+  // GALLERY
+  gallery: [
+    {
+      url: String,
+      public_id: String
+    }
+  ]
+
 
 })
 

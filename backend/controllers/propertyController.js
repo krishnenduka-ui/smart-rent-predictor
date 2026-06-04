@@ -18,6 +18,8 @@ export const addProperty = async (req, res, next) => {
             propertyType,
             neighbourhoods,
             featured } = req.body
+        
+        
 
         if (!title ||
             !description ||
@@ -37,12 +39,16 @@ export const addProperty = async (req, res, next) => {
             return res.json({ error: "Some fields are empty" })
         }
 
-        const mainImage = req.files.image[0].path;
+         // MAIN IMAGE
+    const mainImage = req.files.image[0];
 
-        const galleryImages =
-            req.files.gallery?.map(
-                (file) => file.path
-            ) || [];
+    // GALLERY
+    const galleryImages = req.files.gallery || [];
+
+    const galleryData = galleryImages.map((file) => ({
+      url: file.path,
+      public_id: file.filename,
+    }));
 
         const property = await propertyModel.create({
             title,
@@ -59,8 +65,12 @@ export const addProperty = async (req, res, next) => {
             propertyType,
             neighbourhoods: neighbourhoods.split(","),
             featured,
-            images: mainImage,
-            gallery:galleryImages
+             // COVER IMAGE
+      image: mainImage.path,
+      imagePublicId: mainImage.filename,
+
+      // GALLERY
+      gallery: galleryData,
         })
 
         return res.json({ message: "Property added", property })
@@ -98,12 +108,20 @@ export const getAllProperties = async (req, res, next) => {
 
         //Filter by bedrooms
         if (bedrooms) {
-            query.bedrooms = Number(bedrooms)
+            if (bedrooms === "3+") {
+                query.bedrooms = { $gte: 3 }
+            } else {
+                query.bedrooms = Number(bedrooms)
+            }
         }
 
         //Filter by bathrooms 
         if (bathrooms) {
+            if(bathrooms === "3+"){
+                query.bedrooms = {$gte:3}
+            }else{
             query.bathrooms = Number(bathrooms)
+            }
         }
 
         //Filter by property type 
