@@ -2,13 +2,18 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchProperties, deleteProperty } from "../redux/thunks/propertyThunks";
+import {
+  fetchProperties,
+  deleteProperty,
+} from "../redux/thunks/propertyThunks";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { properties, loading } = useSelector((state) => state.properties);
+  const { properties, loading } = useSelector(
+    (state) => state.properties
+  );
 
   useEffect(() => {
     dispatch(fetchProperties());
@@ -24,85 +29,107 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">
-          Admin Dashboard
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200">
 
-        <div className="flex gap-3">
+      {/* HEADER */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+
+        <div>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
+            Admin Dashboard
+          </h1>
+          <p className="text-gray-500 mt-1">
+            Manage your property listings
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+
           <Link to="/addProperty">
-            <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow">
+            <button className="bg-black text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
               + Add Property
             </button>
           </Link>
 
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow"
+            className="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-semibold transition"
           >
             Logout
           </button>
         </div>
       </div>
 
-      {/* Loading */}
+      {/* LOADING */}
       {loading && (
-        <p className="text-center text-gray-600 text-lg">Loading...</p>
+        <div className="flex justify-center py-10">
+          <div className="w-10 h-10 border-4 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
+        </div>
       )}
 
-      {/* Properties Grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* GRID */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 pb-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+
         {properties?.map((property) => (
           <div
             key={property._id}
-            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
+            className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition overflow-hidden group"
           >
-            {/* Image */}
-            <img
-              src={property.image}
-              alt={property.title}
-              className="w-full h-48 object-cover"
-            />
 
-            {/* Content */}
-            <div className="p-5">
-              <h3 className="text-xl font-semibold text-gray-800 mb-1">
+            {/* IMAGE */}
+            <div className="overflow-hidden">
+              <img
+                src={property.image}
+                alt={property.title}
+                className="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
+              />
+            </div>
+
+            {/* CONTENT */}
+            <div className="p-6">
+
+              <h3 className="text-xl font-bold text-gray-800">
                 {property.title}
               </h3>
 
-              <p className="text-gray-500 mb-1">{property.location}</p>
+              <p className="text-gray-500 mt-1">
+                {property.location}
+              </p>
 
-              <p className="text-blue-600 font-bold text-lg mb-4">
+              <p className="text-2xl font-extrabold text-emerald-600 mt-3">
                 ₹ {property.price}
               </p>
 
-              {/* Buttons */}
-              <div className="flex gap-2">
-                <Link to={`/editProperty/${property._id}`} className="flex-1">
-                  <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-lg transition">
+              {/* BUTTONS */}
+              <div className="flex gap-3 mt-5">
+
+                <Link
+                  to={`/editProperty/${property._id}`}
+                  className="flex-1"
+                >
+                  <button className="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-xl font-semibold transition">
                     Edit
                   </button>
                 </Link>
 
                 <button
                   onClick={() => handleDelete(property._id)}
-                  className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition"
+                  className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-xl font-semibold transition"
                 >
                   Delete
                 </button>
+
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Empty state */}
+      {/* EMPTY STATE */}
       {!loading && properties?.length === 0 && (
-        <p className="text-center text-gray-500 mt-10">
+        <div className="text-center text-gray-500 mt-10">
           No properties found
-        </p>
+        </div>
       )}
     </div>
   );

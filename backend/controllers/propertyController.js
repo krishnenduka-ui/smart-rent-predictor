@@ -1,3 +1,4 @@
+import { set } from 'mongoose';
 import propertyModel from '../models/propertyModel.js'
 
 
@@ -18,37 +19,36 @@ export const addProperty = async (req, res, next) => {
             propertyType,
             neighbourhoods,
             featured } = req.body
-        
-        
+
+
 
         if (!title ||
             !description ||
             !price ||
             !area ||
             !location ||
-            !coordinates ||
             !bedrooms ||
             !bathrooms ||
             !amenities ||
-            !rating ||
-            !popularity ||
             !propertyType ||
-            !neighbourhoods ||
-            featured === undefined) {
+            !neighbourhoods) {
 
-            return res.json({ error: "Some fields are empty" })
+            return res.status(400).json({error: "Some fields are empty"});
         }
 
-         // MAIN IMAGE
-    const mainImage = req.files.image[0];
 
-    // GALLERY
-    const galleryImages = req.files.gallery || [];
+        //image validation
+        if (!req.files || !req.files.image) {
+            return res.status(400).json({error: "Main image is required"});
+        }
 
-    const galleryData = galleryImages.map((file) => ({
-      url: file.path,
-      public_id: file.filename,
-    }));
+        const mainImage = req.files.image[0];
+        const galleryImages = req.files.gallery || [];
+
+        const galleryData = galleryImages.map((file) => ({
+            url: file.path,
+            public_id: file.filename,
+        }));
 
         const property = await propertyModel.create({
             title,
@@ -56,24 +56,21 @@ export const addProperty = async (req, res, next) => {
             price,
             area,
             location,
-            coordinates,
+            coordinates: coordinates || { lat: 0, lng: 0 },
             bedrooms,
             bathrooms,
             amenities: amenities.split(","),
-            rating,
-            popularity,
+            rating: 0,
+            popularity: 0,
             propertyType,
             neighbourhoods: neighbourhoods.split(","),
-            featured,
-             // COVER IMAGE
-      image: mainImage.path,
-      imagePublicId: mainImage.filename,
-
-      // GALLERY
-      gallery: galleryData,
+            featured: featured || false,
+            image: mainImage.path,
+            imagePublicId: mainImage.filename,
+            gallery: galleryData
         })
 
-        return res.json({ message: "Property added", property })
+        return res.status(201).json({ message: "Property added", property })
 
     } catch (error) {
         next(error)
@@ -84,7 +81,7 @@ export const addProperty = async (req, res, next) => {
 //Get all properties
 export const getAllProperties = async (req, res, next) => {
     try {
-        const { location, bedrooms, bathrooms, amenities, propertyType, minPrice, maxPrice, sort } = req.query
+        const { location, bedrooms, amenities, propertyType, minPrice, maxPrice, sort } = req.query
         let query = {}
 
         //Search by location
@@ -115,14 +112,7 @@ export const getAllProperties = async (req, res, next) => {
             }
         }
 
-        //Filter by bathrooms 
-        if (bathrooms) {
-            if(bathrooms === "3+"){
-                query.bedrooms = {$gte:3}
-            }else{
-            query.bathrooms = Number(bathrooms)
-            }
-        }
+      
 
         //Filter by property type 
         if (propertyType) {
@@ -130,19 +120,32 @@ export const getAllProperties = async (req, res, next) => {
         }
 
         //Filter by amenities
-        if (amenities) {
-            query.amenities = { $in: amenities.split(",") }
-        }
+    if (amenities) {
+  const arr = amenities.split(",").map(a => a.trim().toLowerCase());
+
+  query.amenities = {
+    $all: arr.map(a => new RegExp(`^${a}$`, "i"))
+  };
+}
+
+    //Sort 
+     const sortMap = {
+      price_asc: { price: 1 },
+      price_desc: { price: -1 },
+      rating_desc: { rating: -1 },
+      popularity_desc: { popularity: -1 },
+    };
+
+    const sortOption = sortMap[sort] || { createdAt: -1 };
 
 
-        const properties = await propertyModel.find(query).sort(sort)
+        const properties = await propertyModel.find(query).sort(sortOption)
         return res.json(properties)
     }
     catch (error) {
         next(error)
     }
 }
-
 
 
 

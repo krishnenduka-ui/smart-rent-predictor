@@ -62,29 +62,22 @@ const propertySchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    // MAIN IMAGE
-  image: {
-    url: {
-      type: String,
-      required: true
-    },
+   
+    image: String,
 
-    public_id: {
-      type: String,
-      required: true
-    }
+    imagePublicId: String,
+
+    // Gallery images
+    gallery: [
+      {
+        url: String,
+        public_id: String,
+      },
+    ],
   },
 
-  // GALLERY
-  gallery: [
-    {
-      url: String,
-      public_id: String
-    }
-  ]
-
-
-})
+{ timestamps: true }
+)
 
 const propertyModel = mongoose.model("properties", propertySchema)
 

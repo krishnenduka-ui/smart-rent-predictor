@@ -26,6 +26,12 @@ const userSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "properties"
         }
+    ],
+    compareList : [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"properties"
+        }
     ]
 })
 

@@ -9,7 +9,6 @@ import UserDashboard from './pages/UserDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import Favorites from './pages/Favorites'
 import Login from './pages/Login'
-import Neighbourhoods from './pages/Neighbourhoods'
 import NotFound from './pages/NotFound'
 import PropertyDetails from './pages/PropertyDetails'
 import SignUp from './pages/SignUp'
@@ -24,13 +23,18 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/rentals" element={<Rentals/>} />
-        <Route path = "/favorites" element={<Favorites/>} />
-        <Route path = "/compare" element={<ComparePage/>} />
+        
         <Route path = "/login" element={<Login/>} />
         <Route path = "/userDashboard" element={<ProtectedRoute role = "user">
                                                     <UserDashboard/>
                                                 </ProtectedRoute>
                                                 } />
+        <Route path = "/favorites" element={<ProtectedRoute role = "user">
+                                              <Favorites/>
+                                            </ProtectedRoute>} />
+        <Route path = "/compare" element={<ProtectedRoute role = "user">
+                                            <ComparePage/>
+                                          </ProtectedRoute>} />
         <Route path="/adminDashboard" element={<ProtectedRoute role = "admin">
                                                     <AdminDashboard/>
                                               </ProtectedRoute>}/>
@@ -41,8 +45,8 @@ const App = () => {
         <Route path= '/editProperty/:id' element = {<ProtectedRoute role="admin">
                                                   <EditProperty/>
                                                 </ProtectedRoute>}/>
-        <Route path = "/neighbourhoods" element={<Neighbourhoods/>} />
-        <Route path = "/properties" element={<PropertyDetails/>} />
+        
+        <Route path = "/property/:id" element={<PropertyDetails/>} />
         <Route path = "/signup" element={<SignUp/>} />
         <Route path = "*" element={<NotFound/>} />
       </Routes>

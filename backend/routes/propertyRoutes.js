@@ -9,6 +9,8 @@ import { addProperty,
 import {protect,authorize} from '../middlewares/authMiddleware.js'
 import upload from '../middlewares/upload.js'
 
+
+
 const router = express.Router()
 
 router.post('/',protect, authorize("admin"),upload.fields([
@@ -25,5 +27,8 @@ router.put('/:id',protect, authorize("admin"),upload.fields([
   ]) ,updateProperty)
   
 router.delete('/:id',protect, authorize("admin"),deleteProperty)
+
+
+
 
 export default router
