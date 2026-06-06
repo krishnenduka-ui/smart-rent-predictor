@@ -47,7 +47,7 @@ const Home = () => {
       <section
         className="relative min-h-[85vh] sm:min-h-[90vh] bg-cover bg-center flex items-center justify-center px-4"
         style={{
-          backgroundImage: "url('/src/assets/images/bg-image.jpg')",
+          backgroundImage: "url('/images/bg-image.jpg')",
         }}
       >
         {/* Overlay */}
