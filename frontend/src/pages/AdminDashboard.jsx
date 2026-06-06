@@ -15,7 +15,7 @@ const AdminDashboard = () => {
     (state) => state.properties
   );
 
-  const {user} = useSelector((state)=>state.auth)
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     dispatch(fetchProperties());
@@ -116,7 +116,10 @@ const AdminDashboard = () => {
                 </Link>
 
                 <button
-                  onClick={() => handleDelete(property._id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(property._id);
+                  }}
                   className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-xl font-semibold transition"
                 >
                   Delete
