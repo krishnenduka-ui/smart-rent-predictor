@@ -102,7 +102,7 @@ const handleLogout = () => {
 
         <div>
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
-            User Dashboard
+            Welcome {user?.username} ...
           </h1>
           <p className="text-gray-500">
             Browse, compare & save your favorite properties

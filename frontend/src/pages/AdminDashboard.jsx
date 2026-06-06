@@ -15,6 +15,8 @@ const AdminDashboard = () => {
     (state) => state.properties
   );
 
+  const {user} = useSelector((state)=>state.auth)
+
   useEffect(() => {
     dispatch(fetchProperties());
   }, []);
@@ -31,12 +33,12 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200">
 
-      
+
       <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
 
         <div>
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
-            Admin Dashboard
+            Welcome Admin {user?.username}
           </h1>
           <p className="text-gray-500 mt-1">
             Manage your property listings
@@ -60,7 +62,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      
+
       {loading && (
         <div className="flex justify-center py-10">
           <div className="w-10 h-10 border-4 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
@@ -73,7 +75,8 @@ const AdminDashboard = () => {
         {properties?.map((property) => (
           <div
             key={property._id}
-            className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition overflow-hidden group"
+            onClick={() => navigate(`/property/${property._id}`)}
+            className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition overflow-hidden group cursor-pointer"
           >
 
             {/* IMAGE */}
@@ -85,7 +88,7 @@ const AdminDashboard = () => {
               />
             </div>
 
-            
+
             <div className="p-6">
 
               <h3 className="text-xl font-bold text-gray-800">
@@ -100,7 +103,7 @@ const AdminDashboard = () => {
                 ₹ {property.price}
               </p>
 
-              
+
               <div className="flex gap-3 mt-5">
 
                 <Link
@@ -125,7 +128,7 @@ const AdminDashboard = () => {
         ))}
       </div>
 
-      
+
       {!loading && properties?.length === 0 && (
         <div className="text-center text-gray-500 mt-10">
           No properties found

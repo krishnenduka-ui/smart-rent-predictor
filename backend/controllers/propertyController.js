@@ -33,13 +33,13 @@ export const addProperty = async (req, res, next) => {
             !propertyType ||
             !neighbourhoods) {
 
-            return res.status(400).json({error: "Some fields are empty"});
+            return res.status(400).json({ error: "Some fields are empty" });
         }
 
 
         //image validation
         if (!req.files || !req.files.image) {
-            return res.status(400).json({error: "Main image is required"});
+            return res.status(400).json({ error: "Main image is required" });
         }
 
         const mainImage = req.files.image[0];
@@ -112,7 +112,7 @@ export const getAllProperties = async (req, res, next) => {
             }
         }
 
-      
+
 
         //Filter by property type 
         if (propertyType) {
@@ -120,23 +120,23 @@ export const getAllProperties = async (req, res, next) => {
         }
 
         //Filter by amenities
-    if (amenities) {
-  const arr = amenities.split(",").map(a => a.trim().toLowerCase());
+        if (amenities) {
+            const arr = amenities.split(",").map(a => a.trim().toLowerCase());
 
-  query.amenities = {
-    $all: arr.map(a => new RegExp(`^${a}$`, "i"))
-  };
-}
+            query.amenities = {
+                $all: arr.map(a => new RegExp(`^${a}$`, "i"))
+            };
+        }
 
-    //Sort 
-     const sortMap = {
-      price_asc: { price: 1 },
-      price_desc: { price: -1 },
-      rating_desc: { rating: -1 },
-      popularity_desc: { popularity: -1 },
-    };
+        //Sort 
+        const sortMap = {
+            price_asc: { price: 1 },
+            price_desc: { price: -1 },
+            rating_desc: { rating: -1 },
+            popularity_desc: { popularity: -1 },
+        };
 
-    const sortOption = sortMap[sort] || { createdAt: -1 };
+        const sortOption = sortMap[sort] || { createdAt: -1 };
 
 
         const properties = await propertyModel.find(query).sort(sortOption)
@@ -166,15 +166,51 @@ export const getsingleProperty = async (req, res, next) => {
 
 //Update property
 export const updateProperty = async (req, res, next) => {
-    try {
-        const id = req.params.id
-        const updatedProperty = await propertyModel.findByIdAndUpdate(id, req.body, { returnDocument: "after" })
-        return res.json(updatedProperty)
-    } catch (error) {
-        next(error)
-    }
-}
+  try {
+    const id = req.params.id;
 
+    const updatedData = {
+      ...req.body,
+    };
+
+    if (req.body.amenities) {
+      updatedData.amenities = req.body.amenities
+        .split(",")
+        .map((a) => a.trim());
+    }
+
+    if (req.body.neighbourhoods) {
+      updatedData.neighbourhoods = req.body.neighbourhoods
+        .split(",")
+        .map((n) => n.trim());
+    }
+
+    // Update cover image
+    if (req.files?.image) {
+      updatedData.image = req.files.image[0].path;
+      updatedData.imagePublicId = req.files.image[0].filename;
+    }
+
+    // Update gallery
+    if (req.files?.gallery) {
+      updatedData.gallery = req.files.gallery.map((file) => ({
+        url: file.path,
+        public_id: file.filename,
+      }));
+    }
+
+    const updatedProperty = await propertyModel.findByIdAndUpdate(
+      id,
+      updatedData,
+      { returnDocument: "after" }
+    );
+
+    return res.json(updatedProperty);
+
+  } catch (error) {
+    next(error);
+  }
+}
 
 
 //Delete property
