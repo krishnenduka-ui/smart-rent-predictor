@@ -28,7 +28,7 @@ const SignUp = () => {
     const result = await dispatch(registerUser(formdata));
 
     if (result.meta.requestStatus === "fulfilled") {
-      navigate("/");
+      navigate("/signup");
     }
   };
 

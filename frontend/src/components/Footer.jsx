@@ -6,10 +6,10 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
 
-      {/* TOP SECTION */}
+      
       <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
-        {/* BRAND */}
+       
         <div>
           <h2 className="text-3xl font-bold text-white">
             Rental Homes
@@ -20,7 +20,7 @@ const Footer = () => {
             Explore apartments, villas, and homes tailored to your lifestyle.
           </p>
 
-          {/* SOCIAL ICONS */}
+          
           <div className="flex gap-4 mt-6">
             <a
               href="#"
@@ -52,7 +52,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* QUICK LINKS */}
         <div>
           <h3 className="text-xl font-semibold text-white mb-5">
             Quick Links
@@ -97,7 +96,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* SERVICES */}
+       
         <div>
           <h3 className="text-xl font-semibold text-white mb-5">
             Services
@@ -122,7 +121,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* CONTACT */}
+       
         <div>
           <h3 className="text-xl font-semibold text-white mb-5">
             Contact
@@ -138,9 +137,9 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* BOTTOM */}
+      
       <div className="border-t border-gray-800 py-5 text-center text-sm text-gray-500">
-        © 2026 Rental Homes. All rights reserved.
+        © 2026 Homeworth. All rights reserved.
       </div>
     </footer>
   );

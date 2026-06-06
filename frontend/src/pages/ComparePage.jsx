@@ -18,19 +18,21 @@ const ComparePage = () => {
     error,
   } = useSelector((state) => state.compare);
 
-  // LOAD SAVED COMPARE LIST
+  // Loading saved compare list
   useEffect(() => {
     dispatch(fetchCompare());
-  }, [dispatch]);
+  }, []);
+  
 
-  // FETCH COMPARE PROPERTIES
+  // Fetch compare properties
+
   useEffect(() => {
     if (compareIds.length >= 2) {
       dispatch(fetchCompareProperties(compareIds));
     }
   }, [dispatch, compareIds]);
 
-  // EMPTY STATE
+
   if (compareIds.length < 2) {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 px-4 text-center">
@@ -72,21 +74,21 @@ const ComparePage = () => {
       </div>
       
 
-      {/* LOADING */}
+      {/* Loading */}
       {loading && (
         <div className="flex justify-center py-10">
           <div className="w-10 h-10 border-4 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
 
-      {/* ERROR */}
+      {/* Error */}
       {error && (
         <div className="text-center text-red-500 text-lg">
           {error}
         </div>
       )}
 
-      {/* GRID */}
+     
       {!loading && compareProperties.length > 0 && (
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
 
@@ -109,7 +111,7 @@ const ComparePage = () => {
                   className="w-full h-72 object-cover"
                 />
 
-                {/* REMOVE BUTTON */}
+                
                 <button
                   onClick={() =>
                     dispatch(removeCompare(property._id))
@@ -121,7 +123,7 @@ const ComparePage = () => {
 
               </div>
 
-              {/* DETAILS */}
+             
               <div className="p-6">
 
                 <h2 className="text-xl font-bold text-gray-800 mb-3">
@@ -136,7 +138,7 @@ const ComparePage = () => {
                   ₹ {property.price}
                 </p>
 
-                {/* SPECS */}
+                
                 <div className="space-y-3 text-sm">
 
                   <div className="flex justify-between border-b pb-2">

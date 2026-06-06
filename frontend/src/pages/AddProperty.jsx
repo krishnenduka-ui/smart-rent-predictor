@@ -25,10 +25,7 @@ const AddProperty = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    setFormData({...formData,[name]: type === "checkbox" ? checked : value,});
   };
 
   const handleSubmit = async (e) => {
@@ -62,7 +59,6 @@ const AddProperty = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 py-10 px-4">
 
-      {/* CARD */}
       <div className="max-w-5xl mx-auto bg-white/90 backdrop-blur-lg shadow-2xl rounded-3xl p-8 border border-gray-100">
 
         <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-2">
@@ -73,13 +69,13 @@ const AddProperty = () => {
           Fill in the details below to list a property
         </p>
 
-        {/* FORM */}
+        {/* Form */}
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
 
-          {/* TITLE */}
+          
           <input
             type="text"
             name="title"
@@ -88,7 +84,7 @@ const AddProperty = () => {
             className="md:col-span-2 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* LOCATION */}
+          
           <input
             type="text"
             name="location"
@@ -97,7 +93,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* PRICE */}
+          
           <input
             type="number"
             name="price"
@@ -106,7 +102,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* AREA */}
+          
           <input
             type="number"
             name="area"
@@ -115,7 +111,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* BED & BATH */}
+          
           <input
             type="number"
             name="bedrooms"
@@ -132,7 +128,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* TYPE */}
+        
           <select
             name="propertyType"
             onChange={handleChange}
@@ -144,7 +140,7 @@ const AddProperty = () => {
             <option value="House">House</option>
           </select>
 
-          {/* AMENITIES */}
+          
           <input
             type="text"
             name="amenities"
@@ -153,7 +149,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* NEIGHBOURHOODS */}
+          
           <input
             type="text"
             name="neighbourhoods"
@@ -162,7 +158,7 @@ const AddProperty = () => {
             className="md:col-span-2 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* DESCRIPTION */}
+         
           <textarea
             name="description"
             rows="5"
@@ -171,7 +167,7 @@ const AddProperty = () => {
             className="md:col-span-2 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* IMAGE */}
+          
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Cover Image
@@ -184,7 +180,7 @@ const AddProperty = () => {
             />
           </div>
 
-          {/* GALLERY */}
+         
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Gallery Images
@@ -198,7 +194,7 @@ const AddProperty = () => {
             />
           </div>
 
-          {/* FEATURED */}
+          
           <div className="md:col-span-2 flex items-center gap-3">
             <input
               type="checkbox"
@@ -211,7 +207,7 @@ const AddProperty = () => {
             </label>
           </div>
 
-          {/* BUTTON */}
+          
           <button
             type="submit"
             className="md:col-span-2 w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition"

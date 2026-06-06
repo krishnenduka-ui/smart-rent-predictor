@@ -166,7 +166,7 @@ const Home = () => {
             onClick={() => navigate("/rent-estimator")}
             className="mt-8 w-full sm:w-auto bg-white text-emerald-700 px-8 py-3 sm:py-4 rounded-xl text-base sm:text-lg font-semibold hover:bg-gray-100 transition shadow-lg"
           >
-            Try Rent Estimator
+           Rent Estimator
           </button>
         </div>
       </section>

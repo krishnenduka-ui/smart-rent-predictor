@@ -17,7 +17,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     dispatch(fetchProperties());
-  }, [dispatch]);
+  }, []);
 
   const handleDelete = (id) => {
     dispatch(deleteProperty(id));
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200">
 
-      {/* HEADER */}
+      
       <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
 
         <div>
@@ -60,7 +60,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* LOADING */}
+      
       {loading && (
         <div className="flex justify-center py-10">
           <div className="w-10 h-10 border-4 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
@@ -85,7 +85,7 @@ const AdminDashboard = () => {
               />
             </div>
 
-            {/* CONTENT */}
+            
             <div className="p-6">
 
               <h3 className="text-xl font-bold text-gray-800">
@@ -100,7 +100,7 @@ const AdminDashboard = () => {
                 ₹ {property.price}
               </p>
 
-              {/* BUTTONS */}
+              
               <div className="flex gap-3 mt-5">
 
                 <Link
@@ -125,7 +125,7 @@ const AdminDashboard = () => {
         ))}
       </div>
 
-      {/* EMPTY STATE */}
+      
       {!loading && properties?.length === 0 && (
         <div className="text-center text-gray-500 mt-10">
           No properties found

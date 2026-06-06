@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   fetchFavorites,
   removeFavorite,
@@ -28,7 +26,7 @@ const Favorites = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200">
 
-      {/* HEADER */}
+      
       <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
 
         <div>
@@ -48,28 +46,28 @@ const Favorites = () => {
         </button>
       </div>
 
-      {/* LOADING */}
+      
       {loading && (
         <div className="flex justify-center py-10">
           <div className="w-10 h-10 border-4 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
 
-      {/* ERROR */}
+    
       {error && (
         <p className="text-center text-red-500">
           {error}
         </p>
       )}
 
-      {/* EMPTY */}
+      
       {!loading && favorites.length === 0 && (
         <p className="text-center text-gray-500 mt-10">
           No favorites yet ❤️
         </p>
       )}
 
-      {/* GRID */}
+      
       {!loading && favorites.length > 0 && (
         <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 pb-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
 

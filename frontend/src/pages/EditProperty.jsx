@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  getSingleProperty,
-  updateProperty,
-} from "../redux/thunks/propertyThunks";
+import {getSingleProperty,
+      updateProperty,
+      } from "../redux/thunks/propertyThunks";
 
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -60,7 +59,7 @@ const EditProperty = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 flex items-center justify-center px-4">
 
-      {/* CARD */}
+      
       <div className="w-full max-w-2xl bg-white/90 backdrop-blur-lg shadow-2xl rounded-3xl p-8 border border-gray-100">
 
         <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-2">
@@ -71,10 +70,10 @@ const EditProperty = () => {
           Update property details below
         </p>
 
-        {/* FORM */}
+        
         <form onSubmit={handleSubmit} className="space-y-5">
 
-          {/* TITLE */}
+          
           <input
             type="text"
             name="title"
@@ -84,7 +83,7 @@ const EditProperty = () => {
             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* PRICE */}
+          
           <input
             type="number"
             name="price"
@@ -94,7 +93,7 @@ const EditProperty = () => {
             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* LOCATION */}
+          
           <input
             type="text"
             name="location"
@@ -104,7 +103,7 @@ const EditProperty = () => {
             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* ROW */}
+          
           <div className="grid grid-cols-2 gap-4">
 
             <input
@@ -126,7 +125,7 @@ const EditProperty = () => {
             />
           </div>
 
-          {/* TYPE */}
+          
           <input
             type="text"
             name="propertyType"
@@ -136,7 +135,7 @@ const EditProperty = () => {
             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
 
-          {/* BUTTON */}
+          
           <button
             type="submit"
             disabled={loading}

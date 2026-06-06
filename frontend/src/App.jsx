@@ -15,6 +15,7 @@ import SignUp from './pages/SignUp'
 import ProtectedRoute from './components/ProtectedRoute'
 import AddProperty from './pages/AddProperty'
 import EditProperty from './pages/EditProperty'
+import RentEstimator from './pages/RentEstimator'
 
 const App = () => {
   return (
@@ -22,7 +23,9 @@ const App = () => {
       <Navbar/>
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/rentals" element={<Rentals/>} />
+        <Route path="/rent-estimator" element={<RentEstimator />} />
         
         <Route path = "/login" element={<Login/>} />
         <Route path = "/userDashboard" element={<ProtectedRoute role = "user">

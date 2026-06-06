@@ -1,5 +1,6 @@
 import dns from "node:dns/promises";
 dns.setServers(["1.1.1.1"]);
+
 import express from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -11,6 +12,9 @@ import propertyRouter from './routes/propertyRoutes.js'
 import errorHandler from "./middlewares/errorHandler.js"
 import favoriteRouter from './routes/favoriteRoutes.js'
 import compareRouter from './routes/compareRoutes.js'
+import rentRouter from './routes/rentRoutes.js'
+import Property from './models/propertyModel.js'
+import { trainModel } from "./ml/rentModel.js";
 
 const app = express()
 app.use(cors())
@@ -20,6 +24,8 @@ app.use('/auth',authRouter)
 app.use('/property',propertyRouter)
 app.use('/favorites', favoriteRouter)
 app.use('/compare',compareRouter)
+
+app.use('/api/rent',rentRouter)
 
 
 app.get('/profile',protect,authorize("user"),(req,res) =>{
@@ -36,7 +42,32 @@ app.use(errorHandler)
 
 const port = process.env.PORT || 5000
 
-app.listen(port,()=>{
-    console.log(`Server started at port ${port}`)
-})
-connectDB()
+const startServer = async () => {
+
+  try {
+
+    await connectDB();
+
+    console.log("MongoDB connected");
+
+    const properties = await Property.find();
+
+    console.log(`Training with ${properties.length} properties`);
+
+    await trainModel(properties);
+
+    console.log("AI rent model trained");
+
+    app.listen(port, () => {
+      console.log(`Server started at port ${port}`);
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+
+startServer();
