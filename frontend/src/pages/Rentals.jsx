@@ -23,6 +23,7 @@ const Rentals = () => {
     (state) => state.properties
   );
 
+  const [search, setSearch] = useState("")
   const [location, setLocation] = useState("");
   const [bedrooms, setBedrooms] = useState("");
   const [propertyType, setPropertyType] = useState("");
@@ -32,12 +33,9 @@ const Rentals = () => {
   const [sort, setSort] = useState("");
 
   //Carousel
-  const [currentIndex,setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const itemsPerSlide = 4
 
-  useEffect(() => {
-    dispatch(fetchProperties());
-  }, [dispatch]);
 
   const handleAmenities = (e) => {
     const { value, checked } = e.target;
@@ -46,9 +44,12 @@ const Rentals = () => {
     );
   };
 
-  const handleSearch = () => {
+
+  useEffect(() => {
+
     const filters = {};
 
+    if (search) filters.search = search
     if (location) filters.location = location;
     if (bedrooms) filters.bedrooms = bedrooms;
     if (propertyType) filters.propertyType = propertyType;
@@ -61,28 +62,39 @@ const Rentals = () => {
     }
 
     dispatch(fetchProperties(filters));
-    setCurrentIndex(0)
-  };
+    setCurrentIndex(0);
+
+  }, [
+    search,
+    location,
+    bedrooms,
+    propertyType,
+    minPrice,
+    maxPrice,
+    amenities,
+    sort,
+    dispatch,
+  ]);
 
   //Autoslider
-  useEffect(()=>{
-    if(properties.length <= itemsPerSlide)return
+  useEffect(() => {
+    if (properties.length <= itemsPerSlide) return
 
-      const totalSlides = Math.ceil(properties.length/itemsPerSlide)
+    const totalSlides = Math.ceil(properties.length / itemsPerSlide)
 
-      const interval = setInterval(()=>{
-        setCurrentIndex((prev)=>
-        prev >= totalSlides - 1 ? 0 : prev+1
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) =>
+        prev >= totalSlides - 1 ? 0 : prev + 1
       )
-      },3000)
+    }, 6000)
 
-      return () => clearInterval(interval)
-  },[properties])
+    return () => clearInterval(interval)
+  }, [properties])
 
 
   const slides = []
-  for(let i = 0; i < properties.length; i+=itemsPerSlide){
-    slides.push(properties.slice(i,i+itemsPerSlide))
+  for (let i = 0; i < properties.length; i += itemsPerSlide) {
+    slides.push(properties.slice(i, i + itemsPerSlide))
   }
 
 
@@ -101,6 +113,22 @@ const Rentals = () => {
         </div>
       </div>
 
+      <div className="flex justify-center mb-8 mt-10">
+
+        <div className="w-full max-w-3xl relative">
+
+          <input
+            type="text"
+            placeholder="Search properties..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full border border-gray-300 bg-white px-5 py-4 rounded-2xl shadow-md outline-none text-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition"
+          />
+
+        </div>
+
+      </div>
+
       {/* MAIN WRAPPER */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 py-10">
 
@@ -110,9 +138,7 @@ const Rentals = () => {
           <div className="bg-white/90 backdrop-blur-lg p-7 rounded-3xl shadow-xl border border-gray-100 h-fit sticky top-20">
 
             <div className="flex items-center gap-3 mb-6">
-              <div className="bg-gray-100 p-2 rounded-lg">
-                <FaSearch className="text-gray-700" />
-              </div>
+
               <h2 className="text-2xl font-bold text-gray-800">
                 Filters
               </h2>
@@ -215,16 +241,10 @@ const Rentals = () => {
               </div>
             </div>
 
-            {/* BUTTON */}
-            <button
-              onClick={handleSearch}
-              className="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition"
-            >
-              Search Properties
-            </button>
+
           </div>
 
-                    {/* ✅ CAROUSEL */}
+          {/* ✅ CAROUSEL */}
           <div>
 
             {loading && (

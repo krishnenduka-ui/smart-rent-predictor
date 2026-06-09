@@ -81,12 +81,32 @@ export const addProperty = async (req, res, next) => {
 //Get all properties
 export const getAllProperties = async (req, res, next) => {
     try {
-        const { location, bedrooms, amenities, propertyType, minPrice, maxPrice, sort } = req.query
+        const { search, location, bedrooms, amenities, propertyType, minPrice, maxPrice, sort } = req.query
         let query = {}
 
-        //Search by location
+        if (search) {
+            const keywords = search.split(" ")
+
+            query.$or = [
+                {
+                    title: {
+                        $regex: keywords.join("|"),
+                        $options: "i"
+                    },
+
+                },
+                {
+                    location: {
+                        $regex: keywords.join("|"),
+                        $options: "i"
+                    },
+                }
+            ]
+        }
+
+        //Location filter
         if (location) {
-            query.location = new RegExp(location, "i")
+            query.location = new RegExp(location, "i");
         }
 
         //Search by price range 
@@ -166,50 +186,50 @@ export const getsingleProperty = async (req, res, next) => {
 
 //Update property
 export const updateProperty = async (req, res, next) => {
-  try {
-    const id = req.params.id;
+    try {
+        const id = req.params.id;
 
-    const updatedData = {
-      ...req.body,
-    };
+        const updatedData = {
+            ...req.body,
+        };
 
-    if (req.body.amenities) {
-      updatedData.amenities = req.body.amenities
-        .split(",")
-        .map((a) => a.trim());
+        if (req.body.amenities) {
+            updatedData.amenities = req.body.amenities
+                .split(",")
+                .map((a) => a.trim());
+        }
+
+        if (req.body.neighbourhoods) {
+            updatedData.neighbourhoods = req.body.neighbourhoods
+                .split(",")
+                .map((n) => n.trim());
+        }
+
+        // Update cover image
+        if (req.files?.image) {
+            updatedData.image = req.files.image[0].path;
+            updatedData.imagePublicId = req.files.image[0].filename;
+        }
+
+        // Update gallery
+        if (req.files?.gallery) {
+            updatedData.gallery = req.files.gallery.map((file) => ({
+                url: file.path,
+                public_id: file.filename,
+            }));
+        }
+
+        const updatedProperty = await propertyModel.findByIdAndUpdate(
+            id,
+            updatedData,
+            { returnDocument: "after" }
+        );
+
+        return res.json(updatedProperty);
+
+    } catch (error) {
+        next(error);
     }
-
-    if (req.body.neighbourhoods) {
-      updatedData.neighbourhoods = req.body.neighbourhoods
-        .split(",")
-        .map((n) => n.trim());
-    }
-
-    // Update cover image
-    if (req.files?.image) {
-      updatedData.image = req.files.image[0].path;
-      updatedData.imagePublicId = req.files.image[0].filename;
-    }
-
-    // Update gallery
-    if (req.files?.gallery) {
-      updatedData.gallery = req.files.gallery.map((file) => ({
-        url: file.path,
-        public_id: file.filename,
-      }));
-    }
-
-    const updatedProperty = await propertyModel.findByIdAndUpdate(
-      id,
-      updatedData,
-      { returnDocument: "after" }
-    );
-
-    return res.json(updatedProperty);
-
-  } catch (error) {
-    next(error);
-  }
 }
 
 
