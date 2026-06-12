@@ -1,5 +1,6 @@
 import React from "react";
-import { FaFacebookF, FaInstagram, FaTwitter, FaLinkedinIn } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -23,28 +24,36 @@ const Footer = () => {
           
           <div className="flex gap-4 mt-6">
             <a
-              href="#"
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-emerald-600 transition"
             >
               <FaFacebookF />
             </a>
 
             <a
-              href="#"
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-emerald-600 transition"
             >
               <FaInstagram />
             </a>
 
             <a
-              href="#"
+              href="https://x.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-emerald-600 transition"
             >
-              <FaTwitter />
+              <FaXTwitter/>
             </a>
 
             <a
-              href="#"
+              href="https://www.linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-emerald-600 transition"
             >
               <FaLinkedinIn />
