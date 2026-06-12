@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import {
   fetchProperties,
@@ -25,10 +24,7 @@ const AdminDashboard = () => {
     dispatch(deleteProperty(id));
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200">
@@ -45,21 +41,7 @@ const AdminDashboard = () => {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-3">
-
-          <Link to="/addProperty">
-            <button className="bg-black text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
-              + Add Property
-            </button>
-          </Link>
-
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-semibold transition"
-          >
-            Logout
-          </button>
-        </div>
+        
       </div>
 
 

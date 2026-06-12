@@ -215,31 +215,74 @@ const Rentals = () => {
               <div className="space-y-2 text-gray-700">
 
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" value="wifi" onChange={handleAmenities} />
+                  <input
+                    type="checkbox"
+                    value="wifi"
+                    checked={amenities.includes("wifi")}
+                    onChange={handleAmenities}
+                  />
                   <FaWifi /> Wi-Fi
                 </label>
 
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" value="pool" onChange={handleAmenities} />
+                  <input
+                    type="checkbox"
+                    value="pool"
+                    checked={amenities.includes("pool")}
+                    onChange={handleAmenities}
+                  />
                   <FaSwimmingPool /> Pool
                 </label>
 
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" value="parking" onChange={handleAmenities} />
+                  <input
+                    type="checkbox"
+                    value="parking"
+                    checked={amenities.includes("parking")}
+                    onChange={handleAmenities}
+                  />
                   <FaParking /> Parking
                 </label>
 
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" value="gym" onChange={handleAmenities} />
+                  <input
+                    type="checkbox"
+                    value="gym"
+                    checked={amenities.includes("gym")}
+                    onChange={handleAmenities}
+                  />
                   <FaDumbbell /> Gym
                 </label>
 
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" value="security" onChange={handleAmenities} />
+                  <input
+                    type="checkbox"
+                    value="security"
+                    checked={amenities.includes("security")}
+                    onChange={handleAmenities}
+                  />
                   <FaShieldAlt /> Security
                 </label>
+
               </div>
             </div>
+            {/* CLEAR FILTERS BUTTON */}
+            <button
+              onClick={() => {
+                setSearch("");
+                setLocation("");
+                setBedrooms("");
+                setPropertyType("");
+                setMinPrice("");
+                setMaxPrice("");
+                setAmenities([]);
+                setSort("");
+                setCurrentIndex(0);
+              }}
+              className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition"
+            >
+              Clear Filters
+            </button>
 
 
           </div>
