@@ -9,7 +9,8 @@ import {
   FaBalanceScale,
   FaSignInAlt,
   FaUserPlus,
-  FaBuilding
+  FaBuilding,
+  FaLock
 } from "react-icons/fa";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -52,90 +53,80 @@ const Navbar = () => {
           // 🟡 GUEST NAVBAR
           <div className="flex gap-2 items-center">
             <Link
-                to="/"
-                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl hover:text-emerald-600"
-              >
-                <FaHome />
-                Home
-              </Link>
+              to="/"
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl hover:text-emerald-600"
+            >
+              <FaHome />
+              Home
+            </Link>
 
             <Link
-                to="/rentals"
-                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl hover:text-emerald-600"
-              >
-                <FaBuilding />
-                Rentals
-              </Link>
+              to="/rentals"
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl hover:text-emerald-600"
+            >
+              <FaBuilding />
+              Rentals
+            </Link>
             <Link
-                to="/signup"
-                className="flex items-center justify-center gap-2 border border-emerald-600 text-emerald-600 px-5 py-2.5 rounded-xl hover:bg-emerald-600 hover:text-white transition duration-300"
-              >
-                <FaUserPlus />
-                Sign Up
-              </Link>
+              to="/signup"
+              className="flex items-center justify-center gap-2 border border-emerald-600 text-emerald-600 px-5 py-2.5 rounded-xl hover:bg-emerald-600 hover:text-white transition duration-300"
+            >
+              <FaUserPlus />
+              Sign Up
+            </Link>
 
             <Link
-                to="/login"
-                className="flex items-center justify-center gap-2 bg-emerald-600 text-white px-5 py-2.5 rounded-xl hover:bg-emerald-700 transition duration-300 shadow-md"
-              >
-                <FaSignInAlt />
-                Log In
-              </Link>
+              to="/login"
+              className="flex items-center justify-center gap-2 bg-emerald-600 text-white px-5 py-2.5 rounded-xl hover:bg-emerald-700 transition duration-300 shadow-md"
+            >
+              <FaSignInAlt />
+              Log In
+            </Link>
           </div>
 
         ) : isAdmin ? (
           // 🔴 ADMIN NAVBAR
-          <div className="flex gap-2 items-center">
-            <Link to="/adminDashboard" className={linkStyle}>
-              <FaThLarge /> Dashboard
-            </Link>
+          
+            <div className="flex items-center gap-4">
+              <Link to="/adminDashboard" className={linkStyle}>
+                <FaThLarge /> Dashboard
+              </Link>
 
-            <Link to="/addProperty">
-              <button className="bg-black text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
-                + Add Property
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
+              >
+                <FaSignOutAlt />
+                Logout
               </button>
-            </Link>
-
-            <Link to="/adminBookingsList">
-              <button className="bg-black text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
-                Booked Properties
-              </button>
-            </Link>
-
-
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
-            >
-              <FaSignOutAlt />
-              Logout
-            </button>
-          </div>
+            </div>
+          
 
         ) : (
           // 🟢 USER NAVBAR
           <div className="flex gap-2 items-center">
-            <Link to="/userDashboard" className={linkStyle}>
+            <Link to="/userDashboard" 
+            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-600 transition">
               <FaThLarge /> Dashboard
             </Link>
 
             <Link to="/favorites">
-              <button className="flex items-center gap-2 bg-gray-900 text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
+              <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-600 transition">
                 <FaHeart />
                 Favorites
               </button>
             </Link>
 
             <Link to="/compare">
-              <button className="flex items-center gap-2 bg-gray-900 text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
+              <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-600 transition">
                 <FaBalanceScale />
                 Compare
               </button>
             </Link>
 
             <Link to="/mybookings">
-              <button className="flex items-center gap-2 bg-gray-900 text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
-                
+              <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-600 transition">
+                <FaLock/>
                 My Bookings
               </button>
             </Link>

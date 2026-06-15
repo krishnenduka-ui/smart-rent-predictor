@@ -1,124 +1,203 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
-  fetchProperties,
-  deleteProperty,
-} from "../redux/thunks/propertyThunks";
+  FaHome,
+  FaUsers,
+  FaCalendarCheck,
+  FaCheckCircle,
+  FaLock,
+  FaUserCheck,
+  FaUserSlash,
+  FaRupeeSign,
+  FaPlusCircle,
+  FaChartBar,
+  FaBuilding,
+  FaUser,
+} from "react-icons/fa";
+
+import { fetchDashboardSummary } from "../redux/thunks/adminAnalyticsThunks";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { properties, loading } = useSelector(
-    (state) => state.properties
-  );
-
-  const { user } = useSelector((state) => state.auth)
+  const {
+    summary = {},
+    loading,
+    error,
+  } = useSelector((state) => state.analytics);
 
   useEffect(() => {
-    dispatch(fetchProperties());
-  }, []);
+    dispatch(fetchDashboardSummary());
+  }, [dispatch]);
+  
+  const cards = [
+    {
+      title: "Total Properties",
+      value: summary.totalProperties || 0,
+      icon: <FaHome />,
+      color: "bg-blue-500",
+      route: "/adminPropertiesListing",
+    },
+    {
+      title: "Total Users",
+      value: summary.totalUsers || 0,
+      icon: <FaUsers />,
+      color: "bg-green-500",
+       route: "/adminUsers",
+    },
+    {
+      title: "Total Bookings",
+      value: summary.totalBookings || 0,
+      icon: <FaCalendarCheck />,
+      color: "bg-purple-500",
+      route: "/adminBookingsList",
+    },
+    {
+      title: "Available Properties",
+      value: summary.availableProperties || 0,
+      icon: <FaCheckCircle />,
+      color: "bg-emerald-500",
+    },
+    {
+      title: "Booked Properties",
+      value: summary.bookedProperties || 0,
+      icon: <FaLock />,
+      color: "bg-red-500",
+    },
+    {
+      title: "Active Users",
+      value: summary.activeUsers || 0,
+      icon: <FaUserCheck />,
+      color: "bg-teal-500",
+      route: "/adminUsers",
+    },
+    {
+      title: "Disabled Users",
+      value: summary.disabledUsers || 0,
+      icon: <FaUserSlash />,
+      color: "bg-gray-600",
+       route: "/adminUsers",
+    },
+    
+  ];
 
-  const handleDelete = (id) => {
-    dispatch(deleteProperty(id));
-  };
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <h2 className="text-xl font-semibold text-gray-700">
+          Loading Dashboard...
+        </h2>
+      </div>
+    );
+  }
 
-
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <h2 className="text-xl font-semibold text-red-500">
+          {error}
+        </h2>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200">
+    <div className="flex min-h-screen bg-gray-100 pt-4">
+      
+      {/* Sidebar */}
+      <aside className="w-64 bg-white shadow-lg border-r">
+        <div className="p-6">
+          <h2 className="text-2xl font-bold text-emerald-600">
+            Admin Panel
+          </h2>
+        </div>
 
+        <nav className="px-4 space-y-2">
+          <button
+            onClick={() => navigate("/adminDashboard")}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-50 text-emerald-600 font-medium"
+          >
+            <FaChartBar />
+            Dashboard
+          </button>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+          <button
+            onClick={() => navigate("/adminPropertiesListing")}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition"
+          >
+            <FaBuilding />
+            All Properties
+          </button>
 
-        <div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
-            Welcome Admin {user?.username}
-          </h1>
-          <p className="text-gray-500 mt-1">
-            Manage your property listings
-          </p>
+          <button
+            onClick={() => navigate("/addProperty")}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition"
+          >
+            <FaPlusCircle />
+            Add Property
+          </button>
+
+          <button
+            onClick={() => navigate("/adminBookingsList")}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition"
+          >
+            <FaCalendarCheck />
+            Bookings
+          </button>
+
+          <button
+            onClick={() => navigate("/adminUser")}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition"
+          >
+            <FaUsers />
+            Users
+          </button>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 p-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-8">
+          Admin Dashboard
+        </h1>
+
+        {/* Analytics Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              onClick={() => card.route && navigate(card.route)}
+              className={`bg-white rounded-2xl shadow-md p-5 transition-all duration-300 ${
+                card.route
+                  ? "cursor-pointer hover:shadow-xl hover:-translate-y-1"
+                  : ""
+              }`}
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-gray-500 text-sm">
+                    {card.title}
+                  </p>
+
+                  <h2 className="text-3xl font-bold text-gray-800 mt-2">
+                    {card.value}
+                  </h2>
+                </div>
+
+                <div
+                  className={`${card.color} text-white p-4 rounded-full text-2xl`}
+                >
+                  {card.icon}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         
-      </div>
-
-
-      {loading && (
-        <div className="flex justify-center py-10">
-          <div className="w-10 h-10 border-4 border-gray-700 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      )}
-
-      {/* GRID */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 pb-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
-
-        {properties?.map((property) => (
-          <div
-            key={property._id}
-            onClick={() => navigate(`/property/${property._id}`)}
-            className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition overflow-hidden group cursor-pointer"
-          >
-
-            {/* IMAGE */}
-            <div className="overflow-hidden">
-              <img
-                src={property.image}
-                alt={property.title}
-                className="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
-              />
-            </div>
-
-
-            <div className="p-6">
-
-              <h3 className="text-xl font-bold text-gray-800">
-                {property.title}
-              </h3>
-
-              <p className="text-gray-500 mt-1">
-                {property.location}
-              </p>
-
-              <p className="text-2xl font-extrabold text-emerald-600 mt-3">
-                ₹ {property.price}
-              </p>
-
-
-              <div className="flex gap-3 mt-5">
-
-                <Link
-                  to={`/editProperty/${property._id}`}
-                  className="flex-1"
-                >
-                  <button className="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-xl font-semibold transition">
-                    Edit
-                  </button>
-                </Link>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(property._id);
-                  }}
-                  className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-xl font-semibold transition"
-                >
-                  Delete
-                </button>
-
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-
-      {!loading && properties?.length === 0 && (
-        <div className="text-center text-gray-500 mt-10">
-          No properties found
-        </div>
-      )}
+      </main>
     </div>
   );
 };

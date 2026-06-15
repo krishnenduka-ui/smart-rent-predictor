@@ -32,7 +32,11 @@ const userSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref:"properties"
         }
-    ]
+    ],
+    isDisabled:{
+        type:Boolean,
+        default:false
+    }
 })
 
 const userModel = mongoose.model("users",userSchema)

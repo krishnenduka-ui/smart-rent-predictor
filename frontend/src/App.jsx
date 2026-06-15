@@ -18,6 +18,9 @@ import EditProperty from './pages/EditProperty'
 import RentEstimator from './pages/RentEstimator'
 import MyBookings from './pages/MyBookings'
 import AdminBookingsList from './pages/AdminBookingsList'
+import AdminPropertiesListing from './pages/AdminPropertiesListing'
+import AdminUsers from './pages/AdminUsers'
+
 const App = () => {
   return (
     <div>
@@ -58,6 +61,14 @@ const App = () => {
         <Route path= '/adminBookingsList' element = {<ProtectedRoute role="admin">
                                                   <AdminBookingsList/>
                                                 </ProtectedRoute>}/>
+        <Route path="/adminPropertiesListing" element={<ProtectedRoute role = "admin">
+                                                    <AdminPropertiesListing/>
+                                              </ProtectedRoute>}/>
+        <Route path="/adminUsers" element={<ProtectedRoute role = "admin">
+                                                    <AdminUsers/>
+                                              </ProtectedRoute>}/>
+          
+                                                
         
         <Route path = "/property/:id" element={<PropertyDetails/>} />
         <Route path = "/signup" element={<SignUp/>} />

@@ -44,6 +44,11 @@ export const loginUser = async (req, res) => {
         return res.json({ error: "You are not registered" })
     }
 
+    // CHECK IF USER IS DISABLED
+    if (user.isDisabled) {
+        return res.status(403).json({error: "Your account has been disabled by the admin"});
+    }
+
     const verified = await bcrypt.compare(password, user.password)
     if (!verified) {
         return res.json({ error: "invalid credentials" })
@@ -53,12 +58,13 @@ export const loginUser = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "2h" }
     )
-    return res.json({ message: "User loggedIn", token ,user: {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      role: user.role
-   }
-})
+    return res.json({
+        message: "User loggedIn", token, user: {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            role: user.role
+        }
+    })
 
 }

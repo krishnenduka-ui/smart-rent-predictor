@@ -1,5 +1,3 @@
-// bookingThunks.js
-
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api/axiosInstance";
 
