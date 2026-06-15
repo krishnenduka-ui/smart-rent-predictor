@@ -149,27 +149,7 @@ const Home = () => {
 
       </section>
 
-      {/* RENT ESTIMATOR SECTION */}
-      <section className="bg-gradient-to-r from-emerald-600 to-teal-600 py-14 sm:py-20 px-4 sm:px-6">
-
-        <div className="max-w-5xl mx-auto text-center text-white">
-
-          <h2 className="text-2xl sm:text-4xl font-bold leading-snug">
-            Rent Smarter, Live Better
-          </h2>
-
-          <p className="mt-5 text-sm sm:text-lg text-gray-100 max-w-2xl mx-auto">
-            Get smart rent estimates instantly and make better rental decisions.
-          </p>
-
-          <button
-            onClick={() => navigate("/rent-estimator")}
-            className="mt-8 w-full sm:w-auto bg-white text-emerald-700 px-8 py-3 sm:py-4 rounded-xl text-base sm:text-lg font-semibold hover:bg-gray-100 transition shadow-lg"
-          >
-           Rent Estimator
-          </button>
-        </div>
-      </section>
+      
 
     </div>
   );
