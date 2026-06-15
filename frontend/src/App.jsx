@@ -16,7 +16,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import AddProperty from './pages/AddProperty'
 import EditProperty from './pages/EditProperty'
 import RentEstimator from './pages/RentEstimator'
-
+import MyBookings from './pages/MyBookings'
+import AdminBookingsList from './pages/AdminBookingsList'
 const App = () => {
   return (
     <div>
@@ -38,6 +39,11 @@ const App = () => {
         <Route path = "/compare" element={<ProtectedRoute role = "user">
                                             <ComparePage/>
                                           </ProtectedRoute>} />
+
+        <Route path='/mybookings' element={<ProtectedRoute role = "user">
+                                            <MyBookings/>
+                                          </ProtectedRoute>} />
+
         <Route path="/adminDashboard" element={<ProtectedRoute role = "admin">
                                                     <AdminDashboard/>
                                               </ProtectedRoute>}/>
@@ -47,6 +53,10 @@ const App = () => {
         
         <Route path= '/editProperty/:id' element = {<ProtectedRoute role="admin">
                                                   <EditProperty/>
+                                                </ProtectedRoute>}/>
+        
+        <Route path= '/adminBookingsList' element = {<ProtectedRoute role="admin">
+                                                  <AdminBookingsList/>
                                                 </ProtectedRoute>}/>
         
         <Route path = "/property/:id" element={<PropertyDetails/>} />

@@ -62,21 +62,37 @@ const propertySchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-   
+
     image: String,
 
     imagePublicId: String,
 
     // Gallery images
     gallery: [
-      {
-        url: String,
-        public_id: String,
-      },
+        {
+            url: String,
+            public_id: String,
+        },
     ],
-  },
+    isBooked:{
+        type:Boolean,
+        default:false
+    },
+    bookingStatus:{
+        type:String,
+        enum:["Available","Pending","Confirmed"],
+        default:"Available"
+    },
 
-{ timestamps: true }
+    bookedBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"users",
+        default:null
+    },
+
+},
+
+    { timestamps: true }
 )
 
 const propertyModel = mongoose.model("properties", propertySchema)

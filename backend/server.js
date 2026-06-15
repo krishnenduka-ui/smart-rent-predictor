@@ -15,6 +15,7 @@ import compareRouter from './routes/compareRoutes.js'
 import rentRouter from './routes/rentRoutes.js'
 import Property from './models/propertyModel.js'
 import { trainModel } from "./ml/rentModel.js";
+import bookingRouter from './routes/bookingRoute.js'
 
 const app = express()
 app.use(cors())
@@ -24,6 +25,7 @@ app.use('/auth',authRouter)
 app.use('/property',propertyRouter)
 app.use('/favorites', favoriteRouter)
 app.use('/compare',compareRouter)
+app.use('/booking',bookingRouter)
 
 app.use('/api/rent',rentRouter)
 

@@ -96,6 +96,13 @@ const Navbar = () => {
               </button>
             </Link>
 
+            <Link to="/adminBookingsList">
+              <button className="bg-black text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
+                Booked Properties
+              </button>
+            </Link>
+
+
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
@@ -123,6 +130,13 @@ const Navbar = () => {
               <button className="flex items-center gap-2 bg-gray-900 text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
                 <FaBalanceScale />
                 Compare
+              </button>
+            </Link>
+
+            <Link to="/mybookings">
+              <button className="flex items-center gap-2 bg-gray-900 text-white px-5 py-2.5 rounded-xl hover:bg-gray-800 transition font-semibold">
+                
+                My Bookings
               </button>
             </Link>
 

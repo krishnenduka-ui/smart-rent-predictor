@@ -35,7 +35,6 @@ export const addToFavorites = async (req,res,next) => {
 
 
 //Remove from favorites
- // Remove from favorites
 export const removeFromFavorites = async (req,res,next)=>{
     try {
 

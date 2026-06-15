@@ -14,6 +14,7 @@ import {
   addCompare,
   removeCompare,
 } from "../redux/thunks/compareThunks";
+import { bookProperty } from "../redux/thunks/bookingThunks";
 
 const UserDashboard = () => {
   const [properties, setProperties] = useState([]);
@@ -31,7 +32,7 @@ const UserDashboard = () => {
   const [sort, setSort] = useState("");
 
   const [currentIndex, setCurrentIndex] = useState(0);
-const itemsPerSlide = 6;
+  const itemsPerSlide = 6;
 
   const { compareIds } = useSelector((state) => state.compare);
   const { favorites } = useSelector((state) => state.favorites);
@@ -119,31 +120,47 @@ const itemsPerSlide = 6;
   };
 
 
+  const handleBooking = async (propertyId, e) => {
+    e.stopPropagation();
+
+    try {
+      await dispatch(bookProperty(propertyId)).unwrap();
+
+      alert("Property booked successfully");
+
+      // Reload properties
+      const res = await api.get("/property");
+      setProperties(res.data);
+
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   // Auto Slider
-useEffect(() => {
-  if (properties.length <= itemsPerSlide) return;
+  useEffect(() => {
+    if (properties.length <= itemsPerSlide) return;
 
-  const totalSlides = Math.ceil(
-    properties.length / itemsPerSlide
-  );
-
-  const interval = setInterval(() => {
-    setCurrentIndex((prev) =>
-      prev >= totalSlides - 1 ? 0 : prev + 1
+    const totalSlides = Math.ceil(
+      properties.length / itemsPerSlide
     );
-  }, 5000);
 
-  return () => clearInterval(interval);
-}, [properties]);
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) =>
+        prev >= totalSlides - 1 ? 0 : prev + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [properties]);
 
 
-// Create slides
-const slides = [];
+  // Create slides
+  const slides = [];
 
-for (let i = 0; i < properties.length; i += itemsPerSlide) {
-  slides.push(properties.slice(i, i + itemsPerSlide));
-}
+  for (let i = 0; i < properties.length; i += itemsPerSlide) {
+    slides.push(properties.slice(i, i + itemsPerSlide));
+  }
 
 
   return (
@@ -161,7 +178,7 @@ for (let i = 0; i < properties.length; i += itemsPerSlide) {
           </p>
         </div>
 
-        
+
       </div>
 
 
@@ -282,7 +299,7 @@ for (let i = 0; i < properties.length; i += itemsPerSlide) {
             </button>
           </div>
 
-                    {/* PROPERTY GRID */}
+          {/* PROPERTY GRID */}
           <div>
             {properties.length === 0 ? (
               <div className="bg-white rounded-3xl shadow p-10 text-center">
@@ -335,11 +352,10 @@ for (let i = 0; i < properties.length; i += itemsPerSlide) {
                                   e.stopPropagation();
                                   toggleCompare(property._id);
                                 }}
-                                className={`absolute top-4 left-4 flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold shadow ${
-                                  isCompare
+                                className={`absolute top-4 left-4 flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold shadow ${isCompare
                                     ? "bg-black text-white"
                                     : "bg-white text-gray-700"
-                                }`}
+                                  }`}
                               >
                                 <FaBalanceScale />
                                 Compare
@@ -370,6 +386,52 @@ for (let i = 0; i < properties.length; i += itemsPerSlide) {
                               <p className="text-2xl font-extrabold text-emerald-600 mt-3">
                                 ₹{property.price}
                               </p>
+
+                              {/* BOOKING STATUS */}
+<div className="mt-3">
+  {property.bookingStatus === "Available" && (
+    <span className="text-green-600 font-semibold">
+      Available
+    </span>
+  )}
+
+  {property.bookingStatus === "Pending" && (
+    <span className="text-yellow-600 font-semibold">
+      Booked - Waiting for Confirmation
+    </span>
+  )}
+
+  {property.bookingStatus === "Confirmed" && (
+    <span className="text-red-600 font-semibold">
+      Booking Confirmed
+    </span>
+  )}
+</div>
+
+
+
+
+
+
+
+
+                              <div className="mt-5">
+                                {property.isBooked ? (
+                                  <button
+                                    disabled
+                                    className="w-full bg-gray-400 text-white py-3 rounded-xl cursor-not-allowed"
+                                  >
+                                    Already Booked
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={(e) => handleBooking(property._id, e)}
+                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-semibold"
+                                  >
+                                    Book Property
+                                  </button>
+                                )}
+                              </div>
                             </div>
                           </div>
                         );
