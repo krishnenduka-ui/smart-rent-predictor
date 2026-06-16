@@ -7,6 +7,7 @@ import {
 } from "../redux/thunks/propertyThunks";
 
 import { useParams, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const EditProperty = () => {
   const { id } = useParams();
@@ -87,14 +88,23 @@ const EditProperty = () => {
       propertyData.append("gallery", file);
     });
 
-    dispatch(
+    try {
+    await dispatch(
       updateProperty({
         id,
         propertyData,
       })
-    );
+    ).unwrap();
 
-    navigate("/adminDashboard");
+    toast.success("Property updated successfully!");
+
+    setTimeout(() => {
+      navigate("/adminDashboard");
+    }, 1500);
+
+  } catch (error) {
+    toast.error(error || "Failed to update property");
+  }
   };
 
   return (

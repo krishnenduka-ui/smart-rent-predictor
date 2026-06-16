@@ -63,3 +63,22 @@ export const confirmBooking = createAsyncThunk(
     }
   }
 );
+
+
+export const cancelBooking = createAsyncThunk(
+  "booking/cancelBooking",
+  async (bookingId, thunkAPI) => {
+    try {
+      const res = await api.put(
+        `/booking/cancel/${bookingId}`
+      );
+
+      return res.data;
+
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message
+      );
+    }
+  }
+);

@@ -3,7 +3,8 @@ import {
   bookProperty,
   getMyBookings,
   getAllBookings,
-  confirmBooking
+  confirmBooking,
+  cancelBooking
 } from "../thunks/bookingThunks";
 
 const bookingSlice = createSlice({
@@ -64,6 +65,29 @@ const bookingSlice = createSlice({
         state.loading = false;
       })
       .addCase(confirmBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      //Cancel Booking
+
+      .addCase(cancelBooking.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(cancelBooking.fulfilled, (state, action) => {
+        state.loading = false;
+
+        const updatedBooking = action.payload.booking;
+
+        state.bookings = state.bookings.map((booking) =>
+          booking._id === updatedBooking._id
+            ? updatedBooking
+            : booking
+        );
+      })
+
+      .addCase(cancelBooking.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

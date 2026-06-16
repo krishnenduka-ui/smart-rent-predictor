@@ -15,6 +15,7 @@ import {
   removeCompare,
 } from "../redux/thunks/compareThunks";
 import { bookProperty } from "../redux/thunks/bookingThunks";
+import toast from "react-hot-toast";
 
 const UserDashboard = () => {
   const [properties, setProperties] = useState([]);
@@ -126,14 +127,14 @@ const UserDashboard = () => {
     try {
       await dispatch(bookProperty(propertyId)).unwrap();
 
-      alert("Property booked successfully");
+      toast.success("Property booked successfully!");
 
       // Reload properties
       const res = await api.get("/property");
       setProperties(res.data);
 
     } catch (error) {
-      alert(error);
+      toast.error(error || "Booking failed");
     }
   };
 
@@ -188,29 +189,29 @@ const UserDashboard = () => {
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 mt-6 mb-8">
 
-  <div onClick={() => navigate("/rent-estimator")}
-      className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-5 flex items-center justify-between cursor-pointer hover:shadow-xl hover:border-emerald-300 transition-all" >
+        <div onClick={() => navigate("/rent-estimator")}
+          className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-5 flex items-center justify-between cursor-pointer hover:shadow-xl hover:border-emerald-300 transition-all" >
 
-    <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
 
-      <div className="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-2xl">
-        💰
-      </div>
+            <div className="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-2xl">
+              💰
+            </div>
 
-      <div>
-        <h3 className="font-bold text-xl text-gray-800">
-          AI Rent Predictor
-        </h3>
+            <div>
+              <h3 className="font-bold text-xl text-gray-800">
+                AI Rent Predictor
+              </h3>
 
-        <p className="text-gray-500 text-sm">
-          Estimate rental prices instantly.
-        </p>
-      </div>
+              <p className="text-gray-500 text-sm">
+                Estimate rental prices instantly.
+              </p>
+            </div>
 
-    </div>
+          </div>
 
-    <button
-      className="
+          <button
+            className="
         bg-emerald-600
         text-white
         px-5
@@ -218,13 +219,13 @@ const UserDashboard = () => {
         rounded-xl
         font-semibold
         hover:bg-emerald-700"
-    >
-      Try Now
-    </button>
+          >
+            Try Now
+          </button>
 
-  </div>
+        </div>
 
-</div>
+      </div>
 
       {/* SEARCH BAR */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 mb-8">
@@ -381,20 +382,20 @@ const UserDashboard = () => {
                       onClick={() =>
                         navigate(`/property/${property._id}`)
                       }
-                      className="
-                  bg-white
-                  rounded-3xl
-                  overflow-hidden
-                  border
-                  border-gray-100
-                  shadow-lg
-                  hover:shadow-2xl
-                  hover:-translate-y-2
-                  transition-all
-                  duration-300
-                  cursor-pointer
-                  group
-                "
+                      className={`
+  rounded-3xl
+  overflow-hidden
+  border
+  border-gray-100
+  shadow-lg
+  transition-all
+  duration-300
+  group
+  ${property.isBooked
+                          ? "bg-gray-100 opacity-70 cursor-not-allowed"
+                          : "bg-white hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
+                        }
+`}
                     >
 
                       {/* IMAGE */}
@@ -405,6 +406,13 @@ const UserDashboard = () => {
                           alt={property.title}
                           className="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
                         />
+                        {property.isBooked && (
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <span className="bg-white text-red-600 font-bold px-4 py-2 rounded-xl">
+                              Already Booked
+                            </span>
+                          </div>
+                        )}
 
                         <div className="absolute bottom-4 left-4">
                           <span className="bg-white text-emerald-600 px-3 py-1 rounded-full text-sm font-semibold shadow">
@@ -418,8 +426,8 @@ const UserDashboard = () => {
                             toggleCompare(property._id);
                           }}
                           className={`absolute top-4 left-4 px-3 py-2 rounded-full shadow text-sm font-semibold ${isCompare
-                              ? "bg-black text-white"
-                              : "bg-white text-gray-700"
+                            ? "bg-black text-white"
+                            : "bg-white text-gray-700"
                             }`}
                         >
                           <FaBalanceScale />
@@ -468,27 +476,7 @@ const UserDashboard = () => {
                           ₹{property.price}
                         </p>
 
-                        <div className="mt-4">
 
-                          {property.bookingStatus === "Available" && (
-                            <span className="bg-green-100 text-green-700 px-3 py-2 rounded-full text-sm font-semibold">
-                              Available
-                            </span>
-                          )}
-
-                          {property.bookingStatus === "Pending" && (
-                            <span className="bg-yellow-100 text-yellow-700 px-3 py-2 rounded-full text-sm font-semibold">
-                              Pending Approval
-                            </span>
-                          )}
-
-                          {property.bookingStatus === "Confirmed" && (
-                            <span className="bg-red-100 text-red-700 px-3 py-2 rounded-full text-sm font-semibold">
-                              Confirmed
-                            </span>
-                          )}
-
-                        </div>
 
                         <div className="mt-6">
 

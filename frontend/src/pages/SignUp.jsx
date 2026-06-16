@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../redux/thunks/authThunks";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -28,8 +29,16 @@ const SignUp = () => {
     const result = await dispatch(registerUser(formdata));
 
     if (result.meta.requestStatus === "fulfilled") {
+    toast.success("Registration successful!");
+
+    setTimeout(() => {
       navigate("/signup");
-    }
+    }, 1500);
+  } else {
+    toast.error(
+      result.payload || "Registration failed"
+    );
+  }
   };
 
   return (

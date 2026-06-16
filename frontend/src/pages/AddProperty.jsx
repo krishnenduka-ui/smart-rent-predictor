@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axiosInstance";
+import toast from "react-hot-toast";
 
 const AddProperty = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const AddProperty = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    setFormData({...formData,[name]: type === "checkbox" ? checked : value,});
+    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value, });
   };
 
   const handleSubmit = async (e) => {
@@ -49,10 +50,16 @@ const AddProperty = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      toast.success("Property added successfully")
+      setTimeout(() => {
+        navigate("/adminDashboard");
 
-      navigate("/adminDashboard");
+      }, 1500)
+
     } catch (error) {
-      console.log(error);
+      toast.error(
+        error.response?.data?.message || "Failed to add property"
+      );
     }
   };
 
@@ -75,7 +82,7 @@ const AddProperty = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
 
-          
+
           <input
             type="text"
             name="title"
@@ -84,7 +91,7 @@ const AddProperty = () => {
             className="md:col-span-2 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          
+
           <input
             type="text"
             name="location"
@@ -93,7 +100,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          
+
           <input
             type="number"
             name="price"
@@ -102,7 +109,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          
+
           <input
             type="number"
             name="area"
@@ -111,7 +118,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          
+
           <input
             type="number"
             name="bedrooms"
@@ -128,7 +135,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-        
+
           <select
             name="propertyType"
             onChange={handleChange}
@@ -140,7 +147,7 @@ const AddProperty = () => {
             <option value="House">House</option>
           </select>
 
-          
+
           <input
             type="text"
             name="amenities"
@@ -149,7 +156,7 @@ const AddProperty = () => {
             className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          
+
           <input
             type="text"
             name="neighbourhoods"
@@ -158,7 +165,7 @@ const AddProperty = () => {
             className="md:col-span-2 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-         
+
           <textarea
             name="description"
             rows="5"
@@ -167,7 +174,7 @@ const AddProperty = () => {
             className="md:col-span-2 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500"
           />
 
-          
+
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Cover Image
@@ -180,7 +187,7 @@ const AddProperty = () => {
             />
           </div>
 
-         
+
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Gallery Images
@@ -194,7 +201,7 @@ const AddProperty = () => {
             />
           </div>
 
-          
+
           <div className="md:col-span-2 flex items-center gap-3">
             <input
               type="checkbox"
@@ -207,7 +214,7 @@ const AddProperty = () => {
             </label>
           </div>
 
-          
+
           <button
             type="submit"
             className="md:col-span-2 w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition"

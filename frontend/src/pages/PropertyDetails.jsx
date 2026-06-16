@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axiosInstance";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+} from "react-leaflet";
+
+
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -54,21 +62,21 @@ const PropertyDetails = () => {
 
       {/* IMAGE */}
       {property.gallery?.length > 0 && (
-  <div className="mt-6">
-    <h3 className="text-lg font-semibold mb-3">Gallery</h3>
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-3">Gallery</h3>
 
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-      {property.gallery.map((img, index) => (
-        <img
-          key={index}
-          src={img.url}
-          alt={`gallery-${index}`}
-          className="w-full h-100 object-cover rounded-lg hover:scale-105 transition"
-        />
-      ))}
-    </div>
-  </div>
-)}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {property.gallery.map((img, index) => (
+              <img
+                key={index}
+                src={img.url}
+                alt={`gallery-${index}`}
+                className="w-full h-100 object-cover rounded-lg hover:scale-105 transition"
+              />
+            ))}
+          </div>
+        </div>
+      )}
       {/* MAIN DETAILS */}
       <div className="mt-6 bg-white p-6 rounded-xl shadow">
 
@@ -114,21 +122,21 @@ const PropertyDetails = () => {
       {/* Neighbourhoods */}
 
       <div className="mt-6">
-  <h3 className="font-semibold mb-3 text-lg">
-    Nearby Neighbourhoods
-  </h3>
+        <h3 className="font-semibold mb-3 text-lg">
+          Nearby Neighbourhoods
+        </h3>
 
-  <div className="flex flex-wrap gap-2">
-    {property.neighbourhoods?.map((place, index) => (
-      <span
-        key={index}
-        className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium"
-      >
-        📍 {place}
-      </span>
-    ))}
-  </div>
-</div>
+        <div className="flex flex-wrap gap-2">
+          {property.neighbourhoods?.map((place, index) => (
+            <span
+              key={index}
+              className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium"
+            >
+              📍 {place}
+            </span>
+          ))}
+        </div>
+      </div>
 
       {/* LOCATION + MAP */}
       <div className="mt-6 bg-white p-6 rounded-xl shadow">
@@ -142,14 +150,47 @@ const PropertyDetails = () => {
         </p>
 
         {/* GOOGLE MAP */}
-        {property.coordinates?.lat && property.coordinates?.lng ? (
-          <iframe
-            width="100%"
-            height="320"
-            className="rounded-xl"
-            loading="lazy"
-            src={`https://www.google.com/maps?q=${property.coordinates.lat},${property.coordinates.lng}&z=15&output=embed`}
-          ></iframe>
+        {property.coordinates?.lat &&
+          property.coordinates?.lng ? (
+
+          <MapContainer
+            center={[
+              property.coordinates.lat,
+              property.coordinates.lng,
+            ]}
+            zoom={15}
+            scrollWheelZoom={true}
+            style={{
+              height: "400px",
+              width: "100%",
+              borderRadius: "12px",
+            }}
+          >
+            <TileLayer
+              attribution='&copy; OpenStreetMap contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+
+            <Marker
+              position={[
+                property.coordinates.lat,
+                property.coordinates.lng,
+              ]}
+            >
+              <Popup>
+                <div>
+                  <h3 className="font-bold">
+                    {property.title}
+                  </h3>
+
+                  <p>{property.location}</p>
+
+                  <p>₹{property.price}</p>
+                </div>
+              </Popup>
+            </Marker>
+          </MapContainer>
+
         ) : (
           <p className="text-gray-500">
             Map location not available
